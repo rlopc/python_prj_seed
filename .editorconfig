@@ -17,6 +17,3 @@ indent_size = 2
 [*.md]
 # Markdown encodes a hard line break as two trailing spaces; trimming breaks it.
 trim_trailing_whitespace = false
-
-[Makefile]
-indent_style = tab

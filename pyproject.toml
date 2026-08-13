@@ -6,10 +6,16 @@ authors = [
     { name = "rlopc" }
 ]
 requires-python = ">=3.12"
+# Declared as an SPDX expression (PEP 639) and not left to the LICENSE file
+# alone, so a project copied from this seed states its terms in its own
+# metadata instead of inheriting an unnamed licence.
+license = "MIT"
+license-files = ["LICENSE"]
 # This project is never distributed: it is packaged only so it can be installed
 # into the local environment. PyPI rejects any classifier starting with
 # "Private ::", so an accidental upload fails at the server instead of
-# succeeding quietly.
+# succeeding quietly. This guards PyPI only, not private indexes, and a project
+# copied from this seed that IS meant to be published must remove it.
 classifiers = ["Private :: Do Not Upload"]
 
 dependencies = []

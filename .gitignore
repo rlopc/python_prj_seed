@@ -26,6 +26,9 @@ htmlcov/
 .vscode/
 .DS_Store
 
+# Agent tooling, kept local for now. Revisit if the seed should ship it.
+.claude/
+
 # Local environment overrides. Never commit real secrets; commit the example.
 .env
 .env.*

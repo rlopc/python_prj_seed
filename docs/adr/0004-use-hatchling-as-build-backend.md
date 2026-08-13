@@ -22,10 +22,15 @@ Use `hatchling` as the build backend.
 
 - **`uv_build` (the default).** Rejected, and it is a close call. It is faster and
   simpler, and for this application in isolation it would be the better choice.
-  It was rejected because it makes building the project depend on uv specifically,
-  and a project started from this seed may end up built by `pip`, `build`, or a
-  pipeline where uv is not present. Hatchling costs a small amount of speed to
-  remove that coupling.
+  It does not, as is sometimes assumed, tie the build to uv: `uv_build` is
+  published to PyPI as a standalone package, so `pip` and `build` fetch it like
+  any other backend. It was rejected for two reasons specific to a seed. First,
+  uv generates `requires = ["uv_build>=x.y.z,<x.y+1.0"]`, and that upper bound
+  needs a manual edit at every uv minor release — six of them in the fifteen
+  months to August 2026 — a chore inherited by every copy of this repository.
+  `requires = ["hatchling"]` needs no such edit. Second, uv's own documentation
+  routes projects to hatchling as soon as they need build scripts or a
+  non-default layout, and a seed cannot know which of its copies will need that.
 - **setuptools.** Rejected: it works everywhere, but needs explicit configuration
   for a src layout and carries legacy behaviour hatchling does not.
 - **flit-core, pdm-backend.** Rejected: no advantage here over hatchling, and a

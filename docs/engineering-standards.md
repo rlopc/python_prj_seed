@@ -26,7 +26,7 @@ terms under which the repository is distributed.
 | --- | --- | --- |
 | `.gitattributes` | Normalizes line endings to LF inside the repository regardless of the contributor's platform, and marks binary formats so Git never text-diffs them. | Enforced by Git itself on every `add` and `checkout`. |
 | `.gitignore` | Keeps generated artefacts out of history: caches, the virtual environment, coverage reports. Deliberately does not ignore `uv.lock`. | None. Prevention only. |
-| `.editorconfig` | Gives every editor the same charset, indentation and final-newline rules before any formatter exists. Covers the file types Ruff will never format: YAML, TOML, Markdown. | None. Prevention only. Ruff enforces Python formatting from section 5 onwards. |
+| `.editorconfig` | Gives every editor the same charset, indentation and final-newline rules before any formatter exists. Covers the file types Ruff will never format: YAML, JSON, Markdown. | None. Prevention only. Ruff enforces Python formatting from section 5 onwards. |
 | `LICENSE` | States the terms under which the project may be used and copied. | None. |
 
 **Why this comes first:** line endings are the only irreversible setting in the
@@ -44,7 +44,7 @@ and how the source tree becomes importable.
 
 | Tool / file | What it solves | Gate |
 | --- | --- | --- |
-| `uv` | Resolves dependencies, provisions the interpreter, owns the virtual environment, and runs commands inside it via `uv run`. | `uv sync --frozen` fails when `uv.lock` disagrees with `pyproject.toml`. |
+| `uv` | Resolves dependencies, provisions the interpreter, owns the virtual environment, and runs commands inside it via `uv run`. | `uv sync --locked` fails when `uv.lock` is out of date with respect to `pyproject.toml`. Not `--frozen`, which skips that check entirely. |
 | `pyproject.toml` | Single configuration file for the project and for every tool that can be configured there. | — |
 | `.python-version` | Pins the interpreter uv provisions locally: 3.12, the lowest supported version. | uv provisions it automatically on `uv run` and `uv sync`. |
 | `uv.lock` | The exact resolved dependency set, tracked in git and reviewed as a diff. | Enforced in CI. |

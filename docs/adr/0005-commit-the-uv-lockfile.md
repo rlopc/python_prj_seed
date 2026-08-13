@@ -30,5 +30,9 @@ marks it `linguist-generated=true` so it does not drown human changes in reviews
 - Dependency changes show up as reviewable diffs instead of happening invisibly.
 - Merge conflicts on the lockfile do occur. They are resolved by re-running
   `uv lock`, never by editing the file by hand.
-- CI only gets the benefit if it installs with `uv sync --frozen`, which fails
-  when the lockfile disagrees with `pyproject.toml`. Applied in the CI step.
+- CI only gets the benefit if it installs with `uv sync --locked`, which fails
+  when the lockfile is out of date with respect to `pyproject.toml`. The flag is
+  easy to get wrong: `--frozen` looks like the stricter option but is the
+  opposite, taking the lockfile as the source of truth and never checking it, so
+  a dependency change committed without re-locking passes unnoticed. Applied in
+  the CI step.
