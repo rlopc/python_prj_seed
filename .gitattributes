@@ -1,0 +1,19 @@
+# Normalize every text file to LF inside the repository, regardless of the
+# contributor's platform. This is the one setting that is painful to change
+# later: correcting it rewrites every file in a single commit. See ADR-0001.
+* text=auto eol=lf
+
+# Binary formats must never be normalized nor diffed as text.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
+*.gz   binary
+*.whl  binary
+
+# The lockfile is generated, not authored: collapse it in GitHub diffs and
+# reviews so it does not drown the changes a human actually wrote.
+uv.lock linguist-generated=true

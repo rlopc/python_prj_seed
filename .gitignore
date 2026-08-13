@@ -1,0 +1,35 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Packaging artefacts
+build/
+dist/
+*.egg-info/
+
+# Virtual environment (uv creates .venv in the project root by default)
+.venv/
+
+# Test and coverage artefacts
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+
+# Editors and operating system
+.idea/
+.vscode/
+.DS_Store
+
+# Local environment overrides. Never commit real secrets; commit the example.
+.env
+.env.*
+!.env.example
+
+# NOTE: uv.lock is deliberately NOT ignored. This is an application, so the
+# exact resolved dependency set is part of what we ship and what CI reproduces.
