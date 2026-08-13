@@ -31,5 +31,4 @@ htmlcov/
 .env.*
 !.env.example
 
-# NOTE: uv.lock is deliberately NOT ignored. This is an application, so the
-# exact resolved dependency set is part of what we ship and what CI reproduces.
+# NOTE: uv.lock is deliberately NOT ignored. See ADR-0005.

@@ -1,0 +1,22 @@
+[project]
+name = "python-prj-seed"
+version = "0.1.0"
+description = "Seed repository for Python applications."
+authors = [
+    { name = "rlopc" }
+]
+requires-python = ">=3.12"
+# This project is never distributed: it is packaged only so it can be installed
+# into the local environment. PyPI rejects any classifier starting with
+# "Private ::", so an accidental upload fails at the server instead of
+# succeeding quietly.
+classifiers = ["Private :: Do Not Upload"]
+
+dependencies = []
+
+[project.scripts]
+python-prj-seed = "python_prj_seed:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
