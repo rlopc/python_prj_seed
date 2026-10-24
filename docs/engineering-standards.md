@@ -69,3 +69,23 @@ and how the source tree becomes importable.
 **Decisions:** [ADR-0003](adr/0003-use-src-layout-as-a-packaged-application.md) ·
 [ADR-0004](adr/0004-use-hatchling-as-build-backend.md) ·
 [ADR-0007](adr/0007-target-a-single-python-version.md)
+
+## 3. Static typing
+
+**Concern:** catching type errors before the code runs, and keeping every
+signature in the codebase annotated.
+
+| Tool | What it solves | Gate |
+| --- | --- | --- |
+| `mypy` | Checks the annotations of `src/` against the code that uses them, in strict mode: every function annotated, no calls into untyped code. | `uv run mypy` exits non-zero on any error. |
+
+### Rules
+
+- mypy runs with `strict = true`. Individual checks are never relaxed globally;
+  a justified exception is a line-level `# type: ignore[code]` with a comment.
+- `python_version` is set explicitly and must match `.python-version`, because
+  mypy does not read `requires-python`.
+- The paths to check live in `[tool.mypy] files`, so a bare `uv run mypy` is the
+  only command anyone needs.
+
+**Decisions:** [ADR-0008](adr/0008-type-check-with-mypy-in-strict-mode.md)
