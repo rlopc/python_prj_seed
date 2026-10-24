@@ -5,7 +5,7 @@ description = "Seed repository for Python applications."
 authors = [
     { name = "rlopc" }
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.14"
 # Declared as an SPDX expression (PEP 639) and not left to the LICENSE file
 # alone, so a project copied from this seed states its terms in its own
 # metadata instead of inheriting an unnamed licence.

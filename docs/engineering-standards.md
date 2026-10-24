@@ -46,16 +46,15 @@ and how the source tree becomes importable.
 | --- | --- | --- |
 | `uv` | Resolves dependencies, provisions the interpreter, owns the virtual environment, and runs commands inside it via `uv run`. | `uv sync --locked` fails when `uv.lock` is out of date with respect to `pyproject.toml`. Not `--frozen`, which skips that check entirely. |
 | `pyproject.toml` | Single configuration file for the project and for every tool that can be configured there. | — |
-| `.python-version` | Pins the interpreter uv provisions locally: 3.12, the lowest supported version. | uv provisions it automatically on `uv run` and `uv sync`. |
+| `.python-version` | Pins the interpreter uv provisions locally: 3.14, the single target version. | uv provisions it automatically on `uv run` and `uv sync`. |
 | `uv.lock` | The exact resolved dependency set, tracked in git and reviewed as a diff. | Enforced in CI. |
 | `hatchling` | PEP 517 backend that makes `src/python_prj_seed/` an installable package. | — |
 
 ### Rules
 
-- Supported versions: Python 3.12 and above, per SPEC 0. The CI matrix covers
-  3.12, 3.13 and 3.14. `requires-python` carries no upper bound.
-- Development happens on the floor version, so incompatibilities fail locally
-  rather than in CI.
+- One target version, Python 3.14, used for development, CI and deployment: the
+  newest minor that has been out for at least a year. It moves up one minor
+  every October. `requires-python = ">=3.14"` carries no upper bound.
 - Layout is src-layout: `src/python_prj_seed/` for code, `tests/` for tests. The
   package is installed editable; nothing is importable from the repository root.
 - Python development tools are installed with `uv add --dev`, so they are pinned
@@ -69,4 +68,4 @@ and how the source tree becomes importable.
 
 **Decisions:** [ADR-0003](adr/0003-use-src-layout-as-a-packaged-application.md) ·
 [ADR-0004](adr/0004-use-hatchling-as-build-backend.md) ·
-[ADR-0006](adr/0006-python-version-policy.md)
+[ADR-0007](adr/0007-target-a-single-python-version.md)

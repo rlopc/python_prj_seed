@@ -1,7 +1,8 @@
 # 6. Support Python 3.12+ and develop on the floor version
 
-- Status: accepted
+- Status: superseded by [ADR-0007](0007-target-a-single-python-version.md)
 - Date: 2026-08-13
+- Superseded: 2026-10-24
 
 ## Context
 
