@@ -1,7 +1,13 @@
 # 5. Commit the uv lockfile
 
-- Status: accepted
+- Status: superseded by
+  [Engineering Standards, section 2](../engineering-standards.md#2-environment-and-packaging)
 - Date: 2026-08-13
+- Superseded: 2026-10-24
+
+The decision stands; only its record moved. For an application no competent
+person would defend ignoring the lockfile, so it fails the first ADR criterion
+and now lives as a rule in the standards.
 
 ## Context
 

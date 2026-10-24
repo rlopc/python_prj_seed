@@ -61,10 +61,12 @@ and how the source tree becomes importable.
 - Python development tools are installed with `uv add --dev`, so they are pinned
   in the lockfile and CI runs the same versions. Only non-Python binaries are
   installed outside the project.
+- `uv.lock` is tracked: an application has exactly one dependency set, and CI
+  must reproduce it. Lockfile conflicts are resolved by re-running `uv lock`,
+  never by editing the file by hand.
 - All tool configuration lives in `pyproject.toml`. A tool gets its own file only
   when it cannot read `pyproject.toml`.
 
 **Decisions:** [ADR-0003](adr/0003-use-src-layout-as-a-packaged-application.md) ·
 [ADR-0004](adr/0004-use-hatchling-as-build-backend.md) ·
-[ADR-0005](adr/0005-commit-the-uv-lockfile.md) ·
 [ADR-0006](adr/0006-python-version-policy.md)
