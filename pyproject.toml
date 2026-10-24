@@ -32,6 +32,7 @@ dev = [
     "mypy>=2.4.0",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
+    "ruff>=0.17.2",
 ]
 
 [tool.mypy]
@@ -50,6 +51,16 @@ testpaths = ["tests"]
 addopts = ["-ra", "--import-mode=importlib"]
 strict = true
 filterwarnings = ["error"]
+
+[tool.ruff.lint]
+# Extend Ruff's default rule set rather than replace it: since 0.16 the default
+# is a curated selection of several hundred rules. Security rules are off by
+# default because they favour false positives; they are wanted here. ADR-0010.
+extend-select = ["S"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests assert by design.
+"tests/**" = ["S101"]
 
 [tool.coverage.run]
 branch = true

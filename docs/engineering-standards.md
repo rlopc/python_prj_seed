@@ -26,7 +26,7 @@ terms under which the repository is distributed.
 | --- | --- | --- |
 | `.gitattributes` | Normalizes line endings to LF inside the repository regardless of the contributor's platform, and marks binary formats so Git never text-diffs them. | Enforced by Git itself on every `add` and `checkout`. |
 | `.gitignore` | Keeps generated artefacts out of history: caches, the virtual environment, coverage reports. Deliberately does not ignore `uv.lock`. | None. Prevention only. |
-| `.editorconfig` | Gives every editor the same charset, indentation and final-newline rules before any formatter exists. Covers the file types Ruff will never format: YAML, JSON, Markdown. | None. Prevention only. Ruff enforces Python formatting from section 5 onwards. |
+| `.editorconfig` | Gives every editor the same charset, indentation and final-newline rules before any formatter exists. Covers what Ruff does not format: YAML, JSON, and Markdown prose (Ruff formats only the Python code blocks inside Markdown). | None. Prevention only. Ruff enforces Python formatting from section 5 onwards. |
 | `LICENSE` | States the terms under which the project may be used and copied. | None. |
 
 **Why this comes first:** line endings are the only irreversible setting in the
@@ -112,3 +112,25 @@ visible.
   Coverage is never lowered to make room for it.
 
 **Decisions:** [ADR-0009](adr/0009-require-full-branch-coverage.md)
+
+## 5. Lint and format
+
+**Concern:** one formatting style for every Python file, and catching
+bug-prone, insecure or outdated code before review.
+
+| Tool | What it solves | Gate |
+| --- | --- | --- |
+| `ruff format` | Formats Python files, and Python code blocks in Markdown, in a single fixed style. | `uv run ruff format --check` fails on any file it would change. |
+| `ruff check` | Lints against Ruff's default rule set plus the flake8-bandit security rules (`S`). | `uv run ruff check` fails on any violation. |
+
+### Rules
+
+- The formatter runs with its defaults. Style is not debated in review.
+- Ruff's default rule set is extended, never replaced and never widened to
+  `"ALL"`. Adding a family to `extend-select` is a deliberate change.
+- A rule is ignored per file, in `per-file-ignores`, with a comment; a single
+  line takes `# noqa: CODE`. Rules are never ignored globally.
+- Ruff targets the version in `requires-python`, so `UP` rules modernize the
+  code for 3.14 with no extra setting.
+
+**Decisions:** [ADR-0010](adr/0010-lint-and-format-with-ruff.md)
