@@ -1,11 +1,13 @@
 # Engineering Standards
 
 This document is the single reference for how this repository is built, checked
-and released. It grows by one section per setup step. Each section covers one
-concern: the tools involved, what each of them solves, and which gate it imposes.
+and released. Each section covers one concern: the tools involved, what each of
+them solves, and which gate it imposes. A new concern gets a new section.
 
 Decisions that had a defensible alternative are recorded separately as ADRs under
-[`docs/adr/`](adr/), written in the step in which the decision was taken.
+[`docs/adr/`](adr/), written when the decision is taken. An accepted ADR is not
+rewritten: a changed decision gets a new ADR, and the old one is kept with its
+status pointing to its successor.
 
 ## Repository-wide rules
 
