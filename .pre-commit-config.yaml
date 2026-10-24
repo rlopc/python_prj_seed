@@ -1,6 +1,8 @@
 # Fast checks on every commit. The full gate is `uv run just verify`, which CI
 # runs; these hooks only catch the common failures before they reach it.
 default_install_hook_types: [pre-commit, commit-msg]
+# Without this, hooks with no `stages` also run at the commit-msg stage.
+default_stages: [pre-commit]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
