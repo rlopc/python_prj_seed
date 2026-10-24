@@ -44,7 +44,7 @@ and how the source tree becomes importable.
 
 | Tool / file | What it solves | Gate |
 | --- | --- | --- |
-| `uv` | Resolves dependencies, provisions the interpreter, owns the virtual environment, and runs commands inside it via `uv run`. | `uv sync --locked` fails when `uv.lock` is out of date with respect to `pyproject.toml`. Not `--frozen`, which skips that check entirely. |
+| `uv` | Resolves dependencies, provisions the interpreter, owns the virtual environment, and runs commands inside it via `uv run`. | `uv sync --locked` fails when `uv.lock` is out of date with respect to `pyproject.toml`. Not `--frozen`, which skips that check entirely. CI also sets `UV_LOCKED=1`, because a plain `uv run` re-locks a stale lockfile silently. |
 | `pyproject.toml` | Single configuration file for the project and for every tool that can be configured there. | — |
 | `.python-version` | Pins the interpreter uv provisions locally: 3.14, the single target version. | uv provisions it automatically on `uv run` and `uv sync`. |
 | `uv.lock` | The exact resolved dependency set, tracked in git and reviewed as a diff. | Enforced in CI. |
@@ -57,8 +57,9 @@ and how the source tree becomes importable.
   every October. `requires-python = ">=3.14"` carries no upper bound.
 - Layout is src-layout: `src/python_prj_seed/` for code, `tests/` for tests. The
   package is installed editable; nothing is importable from the repository root.
-- Python development tools are installed with `uv add --dev`, so they are pinned
-  in the lockfile and CI runs the same versions. Only non-Python binaries are
+- Development tools are installed with `uv add --dev` whenever they are
+  published on PyPI, whatever language they are written in, so they are pinned
+  in the lockfile and CI runs the same versions. Only tools not on PyPI are
   installed outside the project.
 - `uv.lock` is tracked: an application has exactly one dependency set, and CI
   must reproduce it. Lockfile conflicts are resolved by re-running `uv lock`,
@@ -134,3 +135,23 @@ bug-prone, insecure or outdated code before review.
   code for 3.14 with no extra setting.
 
 **Decisions:** [ADR-0010](adr/0010-lint-and-format-with-ruff.md)
+
+## 6. Task runner
+
+**Concern:** one command that runs every check, identical on a laptop and in CI.
+
+| Tool / file | What it solves | Gate |
+| --- | --- | --- |
+| `just` (`rust-just`) | Runs the named recipes in `justfile`. Installed from PyPI as `rust-just`, the distribution just's own README lists, so the lockfile pins it. | — |
+| `justfile` | Defines `verify`, the full check suite, and `fix`, which applies formatting and safe lint fixes. | `uv run just verify` fails if any check fails. |
+
+### Rules
+
+- `uv run just verify` is the gate before every commit, and the command CI runs.
+  A check that is not in `verify` is not enforced.
+- Recipes call tools through `uv run`, so they work without an activated
+  environment.
+- Locally, `uv run` re-locks a stale lockfile instead of failing; the change
+  then shows up in `git status`. CI does not allow that: see section 2.
+
+**Decisions:** [ADR-0011](adr/0011-run-tasks-with-just.md)
