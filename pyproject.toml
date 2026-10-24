@@ -21,7 +21,7 @@ classifiers = ["Private :: Do Not Upload"]
 dependencies = []
 
 [project.scripts]
-python-prj-seed = "python_prj_seed:main"
+python-prj-seed = "python_prj_seed.cli:main"
 
 [build-system]
 requires = ["hatchling"]

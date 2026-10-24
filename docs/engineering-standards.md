@@ -155,3 +155,24 @@ bug-prone, insecure or outdated code before review.
   then shows up in `git status`. CI does not allow that: see section 2.
 
 **Decisions:** [ADR-0011](adr/0011-run-tasks-with-just.md)
+
+## 7. Command-line interface
+
+**Concern:** how the application is invoked, and where its logic lives relative
+to its input and output.
+
+| Module | What it solves | Gate |
+| --- | --- | --- |
+| `python_prj_seed.domain` | Application logic, free of I/O. | Covered by the test suite like any other code. |
+| `python_prj_seed.cli` | Parses arguments with `argparse`, calls the domain, prints, and returns the exit code. | The console script `python-prj-seed` and `python -m python_prj_seed` both run `cli.main`. |
+
+### Rules
+
+- The domain never reads arguments, prints, or exits; the CLI holds no logic
+  beyond translating between the command line and the domain.
+- `main(argv: Sequence[str] | None = None) -> int`. Tests pass `argv`
+  explicitly. `main` returns the exit code; only argparse itself exits, for
+  `--help`, `--version` and usage errors.
+- CLI output is in English.
+
+**Decisions:** [ADR-0012](adr/0012-build-the-cli-on-argparse.md)
