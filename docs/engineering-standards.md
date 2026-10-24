@@ -176,3 +176,26 @@ to its input and output.
 - CLI output is in English.
 
 **Decisions:** [ADR-0012](adr/0012-build-the-cli-on-argparse.md)
+
+## 8. Continuous integration
+
+**Concern:** running the gate on every change, on a clean machine, and keeping
+the tools it depends on up to date.
+
+| File | What it solves | Gate |
+| --- | --- | --- |
+| `.github/workflows/ci.yml` | Runs `uv sync --locked` and `uv run just verify` on every push to `main` and every pull request. | A red `Verify` job blocks the merge. |
+| `.github/dependabot.yml` | Opens weekly pull requests to update GitHub Actions and the uv lockfile. | Each update goes through the same CI as any other change. |
+
+### Rules
+
+- CI runs exactly `just verify`, nothing more: what passes locally passes in CI.
+- `UV_LOCKED=1` is set for the whole workflow; see section 2.
+- Third-party actions are pinned to a full commit SHA, with the version tag in a
+  comment. A tag can be moved to point at different code; a SHA cannot.
+- The workflow token is read-only (`permissions: contents: read`) and checkout
+  does not persist credentials.
+- Dependabot waits seven days before proposing a new release, so a broken or
+  compromised one is likely to be yanked first.
+- The uv version CI installs is pinned in the workflow. Dependabot does not
+  track it, so it is bumped by hand.
