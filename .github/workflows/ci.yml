@@ -37,3 +37,42 @@ jobs:
       - run: uv sync --locked
 
       - run: uv run just verify
+
+  release:
+    name: Release
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # push the release commit and tag
+    concurrency:
+      # One release at a time, and never cancel one half-way through.
+      group: release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Release exactly the commit `verify` checked, even if main has moved on;
+      # the push then fails as non-fast-forward and the next run releases.
+      - run: git reset --hard "$GITHUB_SHA"
+
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          version: "0.12.3"
+
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Versioning and changelog only: no GitHub Release, nothing published.
+      - run: uv run --only-group release semantic-release version --no-vcs-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_COMMIT_AUTHOR: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          # The build command re-locks uv.lock for the new version, which
+          # UV_LOCKED would forbid.
+          UV_LOCKED: "0"

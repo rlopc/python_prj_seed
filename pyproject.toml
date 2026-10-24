@@ -35,6 +35,9 @@ dev = [
     "ruff>=0.17.2",
     "rust-just>=1.59.0",
 ]
+release = [
+    "python-semantic-release>=10.7.0",
+]
 
 [tool.mypy]
 strict = true
@@ -72,3 +75,13 @@ source_pkgs = ["python_prj_seed"]
 fail_under = 100
 show_missing = true
 skip_covered = true
+
+[tool.semantic_release]
+# The only version source; see ADR-0013. The build step re-locks so uv.lock
+# records the new version and `uv sync --locked` keeps passing after a release.
+version_toml = ["pyproject.toml:project.version"]
+build_command = 'uv lock --upgrade-package "$PACKAGE_NAME" && git add uv.lock'
+commit_message = "chore(release): v{version}"
+# Stay on 0.x until 1.0.0 is cut deliberately: breaking changes bump the minor.
+allow_zero_version = true
+major_on_zero = false

@@ -199,3 +199,26 @@ the tools it depends on up to date.
   compromised one is likely to be yanked first.
 - The uv version CI installs is pinned in the workflow. Dependabot does not
   track it, so it is bumped by hand.
+
+## 9. Versioning and changelog
+
+**Concern:** who sets the version, when, and where each release's changes are
+recorded.
+
+| Tool / file | What it solves | Gate |
+| --- | --- | --- |
+| `python-semantic-release` | Derives the next version from the Conventional Commits since the last tag, and writes `project.version`, `uv.lock` and `CHANGELOG.md`. | Runs in CI as the `Release` job, only after `Verify` passes on `main`. |
+| `CHANGELOG.md` | The human-readable list of changes per release. | Generated; never edited by hand. Created by the first release. |
+
+### Rules
+
+- `project.version` is written only by the release job. It is never edited by
+  hand.
+- `feat:` bumps the minor version and `fix:` or `perf:` the patch. A breaking
+  change (`!` or a `BREAKING CHANGE:` footer) bumps the minor while on 0.x.
+- Releases are `v<version>` tags plus a changelog entry. Nothing is published,
+  and no GitHub Release is created.
+- To preview the next version locally, without changing anything:
+  `uv run --group release semantic-release --noop version --print`.
+
+**Decisions:** [ADR-0013](adr/0013-version-with-python-semantic-release.md)
