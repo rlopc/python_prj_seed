@@ -222,3 +222,25 @@ recorded.
   `uv run --group release semantic-release --noop version --print`.
 
 **Decisions:** [ADR-0013](adr/0013-version-with-python-semantic-release.md)
+
+## 10. Pre-commit hooks
+
+**Concern:** catching the most common failures on the contributor's machine,
+before a commit exists, instead of minutes later in CI.
+
+| Tool / file | What it solves | Gate |
+| --- | --- | --- |
+| `pre-commit` (with `pre-commit-uv`) | Runs the hooks in `.pre-commit-config.yaml` on the staged files of every commit. `pre-commit-uv` makes it build hook environments with uv. | The commit is refused if a hook fails or changes a file. |
+| `.pre-commit-config.yaml` | File hygiene (large files, merge markers, TOML/YAML syntax, private keys, final newlines, trailing whitespace), Ruff, and the Conventional Commits check on the commit message. | — |
+
+### Rules
+
+- Hooks are installed once per clone: `uv run pre-commit install`. The config
+  installs both the `pre-commit` and `commit-msg` hooks.
+- Hooks are a fast subset of `just verify`, never a replacement: mypy and the
+  tests run only in `verify`. CI does not run pre-commit.
+- Ruff runs as a local hook through `uv run`, so its version comes from
+  `uv.lock`. Third-party hook repositories are pinned to a commit SHA
+  (`pre-commit autoupdate --freeze`) and updated by Dependabot.
+- Commit messages that are not Conventional Commits are rejected locally,
+  because the release job (section 9) derives versions from them.
