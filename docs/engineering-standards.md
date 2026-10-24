@@ -89,3 +89,26 @@ signature in the codebase annotated.
   only command anyone needs.
 
 **Decisions:** [ADR-0008](adr/0008-type-check-with-mypy-in-strict-mode.md)
+
+## 4. Tests and coverage
+
+**Concern:** proving the code behaves as intended, and making untested code
+visible.
+
+| Tool | What it solves | Gate |
+| --- | --- | --- |
+| `pytest` | Discovers and runs the tests under `tests/`, against the installed package. | Exits non-zero on any failing test, unregistered marker, invalid configuration, or warning. |
+| `pytest-cov` (`coverage.py`) | Measures which lines and branches of `python_prj_seed` the tests executed. | `uv run pytest --cov` fails below 100% branch coverage. |
+
+### Rules
+
+- Tests live in `tests/`, outside the package, with no `__init__.py`. pytest
+  runs in `importlib` import mode, so tests can only reach the installed code.
+- `strict = true` turns every pytest strictness option on, and
+  `filterwarnings = ["error"]` turns warnings into failures: a deprecation is
+  fixed when it appears, not when it becomes a break.
+- Tests are type-checked like the rest of the code.
+- Code left untested on purpose is excluded explicitly, with a reason.
+  Coverage is never lowered to make room for it.
+
+**Decisions:** [ADR-0009](adr/0009-require-full-branch-coverage.md)
