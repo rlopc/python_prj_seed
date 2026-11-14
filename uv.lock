@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.14"
 resolution-markers = [
     "python_full_version >= '3.15'",
@@ -683,15 +683,15 @@ wheels = [
 
 [[package]]
 name = "pre-commit-uv"
-version = "4.4.0"
+version = "4.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pre-commit" },
     { name = "uv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/95/3c/65ca92a8343efcf16107824d01c4664bb9a2b2e8b7fb4efc954375e56c26/pre_commit_uv-4.4.0.tar.gz", hash = "sha256:8e1b91485fdaba0673fc0f81229cab364c00fb6193b5fe0bcee2862b1a4ce1d4", size = 7591, upload-time = "2026-10-11T00:27:45.724Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b4/63/c11a21bb0c80ceb834996882c9b8cbde1688c0316b7732840f8ca7b7e41e/pre_commit_uv-4.4.2.tar.gz", hash = "sha256:a29a29fe2e0b294ba5a75e28b0ca7804eb04609129603b1897411e44aed8701c", size = 11666, upload-time = "2026-11-04T05:10:45.609Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/29/fa/d5fe0626ce7a70510e6fbf2c6a9f6da4f1cbc42b86542ada1eae0eea6b55/pre_commit_uv-4.4.0-py3-none-any.whl", hash = "sha256:9012b09950a50efdcfb03b95355e1f65c14f9a5cb425d12c6bf2c6d6807617d7", size = 6209, upload-time = "2026-10-11T00:27:44.627Z" },
+    { url = "https://files.pythonhosted.org/packages/b7/3a/b42a54f5e9c7b6aed9d9bdebdc3416adfd645b062d950f5f6ca2e4a23934/pre_commit_uv-4.4.2-py3-none-any.whl", hash = "sha256:baabbe110cd090b180412c50a62fd0740ca9b59a35d4fa46985bb18bb65d4942", size = 5609, upload-time = "2026-11-04T05:10:44.298Z" },
 ]
 
 [[package]]
